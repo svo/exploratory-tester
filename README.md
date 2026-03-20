@@ -102,6 +102,7 @@ docker run --rm \
   -e TARGET_URL=https://example.com \
   -e ATLASSIAN_EMAIL=user@example.com \
   -e ATLASSIAN_API_TOKEN=... \
+  -e ATLASSIAN_SITE_URL=https://your-site.atlassian.net \
   -v $(pwd)/output:/output \
   svanosselaer/exploratory-tester-service:latest
 ```
@@ -115,6 +116,7 @@ docker run --rm \
 | `ANTHROPIC_API_KEY` | When `AGENT=claude` | Anthropic API key for Claude Code |
 | `ATLASSIAN_EMAIL` | When `AGENT=rovo` | Atlassian account email |
 | `ATLASSIAN_API_TOKEN` | When `AGENT=rovo` | Rovo Dev scoped API token |
+| `ATLASSIAN_SITE_URL` | When `AGENT=rovo` | Atlassian site URL (e.g. `https://your-site.atlassian.net`) |
 | `TEST_PROMPT` | No | Custom testing instructions (defaults to general exploratory testing) |
 
 Results and screenshots are written to the `/output` directory.
