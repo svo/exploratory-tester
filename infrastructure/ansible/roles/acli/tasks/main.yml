@@ -1,0 +1,46 @@
+- name: Install ACLI prerequisites
+  ansible.builtin.apt:
+    name:
+      - wget
+      - gnupg2
+    state: present
+  become: true
+
+- name: Create keyrings directory
+  ansible.builtin.file:
+    path: /etc/apt/keyrings
+    state: directory
+    mode: '0755'
+  become: true
+
+- name: Download ACLI GPG key
+  ansible.builtin.get_url:
+    url: https://acli.atlassian.com/gpg/public-key.asc
+    dest: /tmp/acli-public-key.asc
+    mode: '0644'
+  become: true
+
+- name: Add ACLI GPG key
+  ansible.builtin.shell:
+    cmd: cat /tmp/acli-public-key.asc | gpg --dearmor -o /etc/apt/keyrings/acli-archive-keyring.gpg
+    creates: /etc/apt/keyrings/acli-archive-keyring.gpg
+  become: true
+
+- name: Set GPG key permissions
+  ansible.builtin.file:
+    path: /etc/apt/keyrings/acli-archive-keyring.gpg
+    mode: '0644'
+  become: true
+
+- name: Add ACLI repository
+  ansible.builtin.apt_repository:
+    repo: 'deb [arch={{ ansible_facts["architecture"] | regex_replace("aarch64", "arm64") | regex_replace("x86_64", "amd64") }} signed-by=/etc/apt/keyrings/acli-archive-keyring.gpg] https://acli.atlassian.com/linux/deb stable main'
+    state: present
+    filename: acli
+  become: true
+
+- name: Install ACLI
+  ansible.builtin.apt:
+    name: acli
+    update_cache: true
+  become: true

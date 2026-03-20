@@ -60,6 +60,7 @@
     - docker
     - packer
     - claude-code
+    - acli
     - context7-mcp
     - sequential-thinking-mcp
     - shellcheck

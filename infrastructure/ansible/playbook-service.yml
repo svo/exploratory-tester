@@ -12,4 +12,5 @@
     - node
     - git
     - claude-code
+    - acli
     - playwright-mcp
