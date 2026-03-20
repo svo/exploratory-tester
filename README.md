@@ -16,7 +16,7 @@ The project produces three Docker images, each serving a distinct purpose:
 | **builder** | `debian:12-slim` | CI/CD build and test environment | 22 (SSH) |
 | **service** | `debian:12-slim` | Lightweight runtime for exploratory testing capabilities | |
 
-The **service** container is the core runtime where the exploratory testing capabilities are installed. Infrastructure is defined as code via Packer HCL configurations that use the Ansible provisioner to configure each image through playbooks and reusable roles.
+The **service** container is the core runtime where the exploratory testing capabilities are installed. It uses [Claude Code](https://github.com/anthropics/claude-code) to drive browser-based exploratory testing via [Playwright MCP](https://github.com/microsoft/playwright-mcp). Infrastructure is defined as code via Packer HCL configurations that use the Ansible provisioner to configure each image through playbooks and reusable roles.
 
 ## Project Structure
 

@@ -1,0 +1,9 @@
+- name: Install Playwright MCP
+  community.general.npm:
+    name: '@playwright/mcp'
+    global: true
+  become: true
+
+- name: Install Playwright browser and system dependencies
+  ansible.builtin.shell: npx playwright install --with-deps chromium
+  become: true

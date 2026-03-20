@@ -11,3 +11,5 @@
   roles:
     - node
     - git
+    - claude-code
+    - playwright-mcp
