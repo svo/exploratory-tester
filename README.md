@@ -16,7 +16,7 @@ The project produces three Docker images, each serving a distinct purpose:
 | **builder** | `debian:12-slim` | CI/CD build and test environment | 22 (SSH) |
 | **service** | `debian:12-slim` | Lightweight runtime for exploratory testing capabilities | |
 
-The **service** container is the core runtime where the exploratory testing capabilities are installed. It uses [Claude Code](https://github.com/anthropics/claude-code) to drive browser-based exploratory testing via [Playwright MCP](https://github.com/microsoft/playwright-mcp). Infrastructure is defined as code via Packer HCL configurations that use the Ansible provisioner to configure each image through playbooks and reusable roles.
+The **service** container is the core runtime where the exploratory testing capabilities are installed. It uses [Playwright MCP](https://github.com/microsoft/playwright-mcp) for browser automation, driven by either [Claude Code](https://github.com/anthropics/claude-code) or [Rovo Dev CLI](https://support.atlassian.com/rovo/docs/install-and-run-rovo-dev-cli-on-your-device/) as the AI agent. Infrastructure is defined as code via Packer HCL configurations that use the Ansible provisioner to configure each image through playbooks and reusable roles.
 
 ## Project Structure
 
@@ -82,6 +82,10 @@ Replace `service` with `development` or `builder` to build the other images.
 
 ## Usage
 
+The service supports two AI agents, selected via the `AGENT` environment variable (defaults to `claude`).
+
+### Claude Code
+
 ```bash
 docker run --rm \
   -e TARGET_URL=https://example.com \
@@ -90,10 +94,27 @@ docker run --rm \
   svanosselaer/exploratory-tester-service:latest
 ```
 
+### Rovo Dev CLI
+
+```bash
+docker run --rm \
+  -e AGENT=rovo \
+  -e TARGET_URL=https://example.com \
+  -e ATLASSIAN_EMAIL=user@example.com \
+  -e ATLASSIAN_API_TOKEN=... \
+  -v $(pwd)/output:/output \
+  svanosselaer/exploratory-tester-service:latest
+```
+
+### Environment Variables
+
 | Variable | Required | Description |
 |----------|----------|-------------|
 | `TARGET_URL` | Yes | URL of the web application to test |
-| `ANTHROPIC_API_KEY` | Yes | Anthropic API key for Claude Code |
+| `AGENT` | No | AI agent to use: `claude` (default) or `rovo` |
+| `ANTHROPIC_API_KEY` | When `AGENT=claude` | Anthropic API key for Claude Code |
+| `ATLASSIAN_EMAIL` | When `AGENT=rovo` | Atlassian account email |
+| `ATLASSIAN_API_TOKEN` | When `AGENT=rovo` | Rovo Dev scoped API token |
 | `TEST_PROMPT` | No | Custom testing instructions (defaults to general exploratory testing) |
 
 Results and screenshots are written to the `/output` directory.

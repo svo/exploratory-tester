@@ -57,9 +57,23 @@
     mode: '0644'
   become: true
 
-- name: Deploy MCP server configuration
+- name: Deploy MCP server configuration for Claude Code
   ansible.builtin.copy:
     src: mcp.json
     dest: /workspace/.mcp.json
+    mode: '0644'
+  become: true
+
+- name: Create Rovo Dev config directory
+  ansible.builtin.file:
+    path: /root/.rovodev
+    state: directory
+    mode: '0755'
+  become: true
+
+- name: Deploy MCP server configuration for Rovo Dev
+  ansible.builtin.copy:
+    src: rovodev-mcp.json
+    dest: /root/.rovodev/mcp.json
     mode: '0644'
   become: true
