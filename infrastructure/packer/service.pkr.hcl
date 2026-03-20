@@ -13,7 +13,6 @@ packer {
 
 source "docker" "arm64" {
   changes     = [
-    "EXPOSE 3000",
     "CMD [\"/usr/local/bin/entrypoint.sh\"]"
   ]
   commit      = "true"
@@ -24,7 +23,6 @@ source "docker" "arm64" {
 
 source "docker" "amd64" {
   changes     = [
-    "EXPOSE 3000",
     "CMD [\"/usr/local/bin/entrypoint.sh\"]"
   ]
   commit      = "true"
