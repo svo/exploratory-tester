@@ -57,9 +57,9 @@
     mode: '0644'
   become: true
 
-- name: Register Playwright MCP server with Claude Code
-  ansible.builtin.shell: >
-    claude mcp add playwright -- npx @playwright/mcp@latest --config /etc/playwright-mcp/config.json
-  register: claude_mcp_add_playwright
-  changed_when: "'Added MCP server' in claude_mcp_add_playwright.stdout or 'Successfully added' in claude_mcp_add_playwright.stdout"
-  failed_when: false
+- name: Deploy MCP server configuration
+  ansible.builtin.copy:
+    src: mcp.json
+    dest: /workspace/.mcp.json
+    mode: '0644'
+  become: true
