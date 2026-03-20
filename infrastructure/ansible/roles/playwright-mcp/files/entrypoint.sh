@@ -17,4 +17,4 @@ DEFAULT_PROMPT="Perform exploratory testing on ${TARGET_URL}"
 PROMPT="${TEST_PROMPT:-$DEFAULT_PROMPT}"
 
 cd /workspace
-exec claude --print "${PROMPT}" --allowedTools "mcp__playwright__*"
+exec claude --print "${PROMPT}"

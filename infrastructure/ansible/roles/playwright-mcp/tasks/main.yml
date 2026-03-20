@@ -43,6 +43,20 @@
     mode: '0644'
   become: true
 
+- name: Create workspace .claude directory
+  ansible.builtin.file:
+    path: /workspace/.claude
+    state: directory
+    mode: '0755'
+  become: true
+
+- name: Deploy Claude Code settings
+  ansible.builtin.copy:
+    src: settings.json
+    dest: /workspace/.claude/settings.json
+    mode: '0644'
+  become: true
+
 - name: Register Playwright MCP server with Claude Code
   ansible.builtin.shell: >
     claude mcp add playwright -- npx @playwright/mcp@latest --config /etc/playwright-mcp/config.json
