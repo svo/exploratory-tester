@@ -79,3 +79,21 @@ Images are built using the `build.sh` script, which runs Packer inside the build
 ```
 
 Replace `service` with `development` or `builder` to build the other images.
+
+## Usage
+
+```bash
+docker run --rm \
+  -e TARGET_URL=https://example.com \
+  -e ANTHROPIC_API_KEY=sk-... \
+  -v $(pwd)/output:/output \
+  svanosselaer/exploratory-tester-service:latest
+```
+
+| Variable | Required | Description |
+|----------|----------|-------------|
+| `TARGET_URL` | Yes | URL of the web application to test |
+| `ANTHROPIC_API_KEY` | Yes | Anthropic API key for Claude Code |
+| `TEST_PROMPT` | No | Custom testing instructions (defaults to general exploratory testing) |
+
+Results and screenshots are written to the `/output` directory.

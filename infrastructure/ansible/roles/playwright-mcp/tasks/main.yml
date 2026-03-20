@@ -7,3 +7,45 @@
 - name: Install Playwright browser and system dependencies
   ansible.builtin.shell: npx playwright install --with-deps chromium
   become: true
+
+- name: Create Playwright MCP config directory
+  ansible.builtin.file:
+    path: /etc/playwright-mcp
+    state: directory
+    mode: '0755'
+  become: true
+
+- name: Deploy Playwright MCP config
+  ansible.builtin.copy:
+    src: config.json
+    dest: /etc/playwright-mcp/config.json
+    mode: '0644'
+  become: true
+
+- name: Deploy entrypoint script
+  ansible.builtin.copy:
+    src: entrypoint.sh
+    dest: /usr/local/bin/entrypoint.sh
+    mode: '0755'
+  become: true
+
+- name: Create workspace directory
+  ansible.builtin.file:
+    path: /workspace
+    state: directory
+    mode: '0755'
+  become: true
+
+- name: Deploy CLAUDE.md
+  ansible.builtin.copy:
+    src: CLAUDE.md
+    dest: /workspace/CLAUDE.md
+    mode: '0644'
+  become: true
+
+- name: Register Playwright MCP server with Claude Code
+  ansible.builtin.shell: >
+    claude mcp add playwright -- npx @playwright/mcp@latest --config /etc/playwright-mcp/config.json
+  register: claude_mcp_add_playwright
+  changed_when: "'Added MCP server' in claude_mcp_add_playwright.stdout or 'Successfully added' in claude_mcp_add_playwright.stdout"
+  failed_when: false

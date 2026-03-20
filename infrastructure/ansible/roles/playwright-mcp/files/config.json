@@ -1,0 +1,21 @@
+{
+  "browser": {
+    "browserName": "chromium",
+    "launchOptions": {
+      "headless": true,
+      "args": ["--no-sandbox"]
+    },
+    "contextOptions": {
+      "viewport": { "width": 1280, "height": 720 }
+    }
+  },
+  "capabilities": ["core", "testing", "network", "storage"],
+  "timeouts": {
+    "action": 5000,
+    "navigation": 30000,
+    "expect": 5000
+  },
+  "outputDir": "/output",
+  "outputMode": "file",
+  "imageResponses": "allow"
+}
