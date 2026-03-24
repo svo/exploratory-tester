@@ -3,7 +3,7 @@
     "playwright": {
       "type": "stdio",
       "command": "npx",
-      "args": ["@playwright/mcp@latest", "--config", "/etc/playwright-mcp/config.json"]
+      "args": ["@playwright/mcp", "--config", "/etc/playwright-mcp/config.json"]
     }
   }
 }
