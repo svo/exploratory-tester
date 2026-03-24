@@ -4,8 +4,9 @@
     global: true
   become: true
 
-- name: Install Playwright browser and system dependencies
-  ansible.builtin.shell: npx playwright install --with-deps chromium
+- name: Install Playwright browser and system dependencies via global package
+  ansible.builtin.shell: |
+    cd /usr/lib/node_modules/@playwright/mcp && npx playwright install --with-deps chromium
   become: true
 
 - name: Create Playwright MCP config directory
@@ -71,9 +72,3 @@
     mode: '0755'
   become: true
 
-- name: Deploy MCP server configuration for Rovo Dev
-  ansible.builtin.copy:
-    src: rovodev-mcp.json
-    dest: /root/.rovodev/mcp.json
-    mode: '0644'
-  become: true

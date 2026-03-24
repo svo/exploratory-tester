@@ -45,11 +45,39 @@ case "$AGENT" in
   rovo)
     ROVODEV_CONFIG_DIR="${HOME}/.rovodev"
     mkdir -p "${ROVODEV_CONFIG_DIR}"
+
+    PLAYWRIGHT_MCP_ARGS='"--headless", "--browser", "chromium", "--no-sandbox", "--viewport-size", "1280x720", "--output-dir", "/output", "--image-responses", "allow"'
+
+    cat > "${ROVODEV_CONFIG_DIR}/mcp.json" <<MCPEOF
+{
+  "mcpServers": {
+    "playwright": {
+      "command": "npx",
+      "args": ["@playwright/mcp", ${PLAYWRIGHT_MCP_ARGS}],
+      "transport": "stdio"
+    }
+  }
+}
+MCPEOF
+
+    ALLOWED_SIG="stdio:npx:@playwright/mcp --headless --browser chromium --no-sandbox --viewport-size 1280x720 --output-dir /output --image-responses allow"
+
     cat > "${ROVODEV_CONFIG_DIR}/config.yml" <<EOF
 version: 1
 atlassianBillingSite:
   siteUrl: ${ATLASSIAN_SITE_URL}
+mcp:
+  mcpConfigPath: ${ROVODEV_CONFIG_DIR}/mcp.json
+  allowedMcpServers:
+    - "${ALLOWED_SIG}"
+toolPermissions:
+  default: allow
+  bash:
+    default: allow
+  allowedExternalPaths:
+    - /output
 EOF
+
     echo "${ATLASSIAN_API_TOKEN}" | acli rovodev auth login --email "${ATLASSIAN_EMAIL}" --token
     exec acli rovodev run --yolo "${PROMPT}"
     ;;
