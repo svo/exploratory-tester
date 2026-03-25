@@ -9,11 +9,17 @@
       "viewport": { "width": 1280, "height": 720 }
     }
   },
-  "capabilities": ["core", "testing", "network", "storage"],
+  "capabilities": ["core", "testing", "network", "storage", "devtools"],
   "timeouts": {
     "action": 5000,
     "navigation": 30000,
     "expect": 5000
+  },
+  "snapshot": {
+    "mode": "incremental"
+  },
+  "console": {
+    "level": "warning"
   },
   "outputDir": "/output",
   "outputMode": "file",
