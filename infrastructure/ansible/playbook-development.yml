@@ -61,7 +61,6 @@
     - packer
     - claude-code
     - context7-mcp
-    - sequential-thinking-mcp
     - shellcheck
     - ansible-lint
 
